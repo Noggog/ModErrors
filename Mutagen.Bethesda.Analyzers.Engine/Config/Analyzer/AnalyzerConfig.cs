@@ -6,10 +6,10 @@ namespace Mutagen.Bethesda.Analyzers.Config.Analyzer;
 public interface IAnalyzerConfigLookup
 {
     DirectoryPath? DataDirectoryPath { get; }
-    public bool LoadOrderSetByDataDirectory { get; }
-    public IEnumerable<ModKey>? LoadOrderSetToMods { get; }
+    bool LoadOrderSetByDataDirectory { get; }
+    IEnumerable<ModKey>? LoadOrderSetToMods { get; }
     GameRelease? GameRelease { get; }
-    public FilePath? OutputFilePath { get; }
+    FilePath? OutputFilePath { get; }
 }
 
 public interface IAnalyzerConfig : IAnalyzerConfigLookup
