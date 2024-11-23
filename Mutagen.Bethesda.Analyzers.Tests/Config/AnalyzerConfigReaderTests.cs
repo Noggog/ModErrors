@@ -14,12 +14,11 @@ namespace Mutagen.Bethesda.Analyzers.Tests.Config;
 public class AnalyzerConfigReader(
     ILogger<ConfigReader<IAnalyzerConfig>> logger,
     ProcessDataDirectoryPath p1,
-    ProcessGameRelease p2,
-    ProcessLoadOrderSetByDataDirectory p3,
-    ProcessLoadOrderSetToMods p4,
-    ProcessOutputFilePath p5)
+    ProcessLoadOrderSetByDataDirectory p2,
+    ProcessLoadOrderSetToMods p3,
+    ProcessOutputFilePath p4)
 {
-    public readonly ConfigReader<IAnalyzerConfig> Reader = new(logger, [p1, p2, p3, p4, p5]);
+    public readonly ConfigReader<IAnalyzerConfig> Reader = new(logger, [p1, p2, p2, p3, p4]);
 }
 
 public class AnalyzerConfigReaderTests
@@ -67,19 +66,6 @@ public class AnalyzerConfigReaderTests
     {
         sut.Reader.ReadInto(line.AsSpan(), config);
         config.LoadOrderSetToMods.Should().BeEquivalentTo([FormKeys.SkyrimSE.Skyrim.ModKey, Update.ModKey]);
-    }
-
-    [Theory]
-    [AnalyzerInlineData("environment.game_release = SkyrimSE")]
-    [AnalyzerInlineData("environment.game_release = Fallout4")]
-    [AnalyzerInlineData("environment.game_release = Starfield")]
-    public void TestGameRelease(
-        string line,
-        IAnalyzerConfig config,
-        AnalyzerConfigReader sut)
-    {
-        sut.Reader.ReadInto(line.AsSpan(), config);
-        config.Received(1).OverrideGameRelease(Arg.Any<GameRelease>());
     }
 
     [Theory, AnalyzerAutoData]
