@@ -5,5 +5,5 @@ namespace Mutagen.Bethesda.Analyzers.Drivers;
 public interface IDriver
 {
     bool Applicable { get; }
-    public IEnumerable<IAnalyzer> Analyzers { get; }
+    IEnumerable<IAnalyzer> Analyzers { get; }
 }
