@@ -16,10 +16,10 @@ public class ByGenericTypeRecordIsolatedDriver<TMajor> : IIsolatedDriver
     public IEnumerable<IAnalyzer> Analyzers => _isolatedRecordAnalyzers;
 
     public ByGenericTypeRecordIsolatedDriver(
-        IIsolatedRecordAnalyzer<TMajor>[] isolatedRecordAnalyzers,
+        IAnalyzerProvider<IIsolatedRecordAnalyzer<TMajor>> isolatedRecordAnalyzerProvider,
         IWorkDropoff dropoff)
     {
-        _isolatedRecordAnalyzers = isolatedRecordAnalyzers;
+        _isolatedRecordAnalyzers = isolatedRecordAnalyzerProvider.GetAnalyzers().ToArray();
         _dropoff = dropoff;
     }
 

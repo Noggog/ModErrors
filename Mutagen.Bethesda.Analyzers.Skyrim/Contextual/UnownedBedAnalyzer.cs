@@ -30,7 +30,10 @@ public class UnownedBedAnalyzer : IContextualAnalyzer
                 if (!param.LinkCache.TryResolve<IFurnitureGetter>(placedObject.Base.FormKey, out var furniture)) continue;
                 if (!furniture.IsBed()) continue;
 
+                var context = param.LinkCache.ResolveSimpleContext(placedObject);
                 param.AddTopic(
+                    context.ModKey,
+                    placedObject,
                     UnownedBed.Format(placedObject, cell)
                 );
             }

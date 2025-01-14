@@ -1,9 +1,18 @@
-﻿using Autofac;
+﻿using System.IO.Abstractions;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Mutagen.Bethesda.Analyzers.Autofac;
 using Mutagen.Bethesda.Analyzers.Cli.Args;
 using Mutagen.Bethesda.Analyzers.Cli.Overrides;
+using Mutagen.Bethesda.Analyzers.Config;
+using Mutagen.Bethesda.Analyzers.Config.Run;
 using Mutagen.Bethesda.Analyzers.Reporting.Handlers;
 using Mutagen.Bethesda.Environments.DI;
+using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Order.DI;
+using Noggog;
 using Noggog.WorkEngine;
 
 namespace Mutagen.Bethesda.Analyzers.Cli.Modules;
@@ -16,21 +25,50 @@ public class AnalyzerCommandModule(RunAnalyzersCommand command) : Module
         builder.RegisterInstance(new GameReleaseInjection(command.GameRelease)).AsImplementedInterfaces();
         builder.RegisterInstance(new NumWorkThreadsConstant(command.NumThreads)).AsImplementedInterfaces();
 
+        var runConfig = new RunConfig();
+        if (command.RunConfigPath is not null)
+        {
+            var services = new ServiceCollection();
+            services.AddLogging(x => x.AddConsole());
+
+            var tempBuilder = new ContainerBuilder();
+            tempBuilder.Populate(services);
+            var fileSystem = new FileSystem();
+            tempBuilder.RegisterInstance(fileSystem).As<IFileSystem>();
+            tempBuilder.RegisterModule<MainModule>();
+            tempBuilder.RegisterInstance(new GameReleaseInjection(command.GameRelease))
+                .AsImplementedInterfaces();
+
+            var tempContainer = tempBuilder.Build();
+            var runConfigReader = tempContainer.Resolve<ConfigReader<IRunConfig>>();
+            if (fileSystem.File.Exists(command.RunConfigPath))
+            {
+                runConfigReader.ReadInto(new FilePath(command.RunConfigPath), runConfig);
+            }
+        }
+
+        if (command.PrintMetadata.HasValue) runConfig.PrintMetadata = command.PrintMetadata.Value;
+        builder.RegisterModule(new RunConfigModule(runConfig));
+
         if (command.OutputFilePath is not null)
         {
             builder.RegisterType<CsvReportHandler>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterInstance(new CsvInputs(command.OutputFilePath)).AsSelf().AsImplementedInterfaces();
         }
 
-        if (command.CustomDataFolder is not null)
+        if (command.DataFolder is not null)
         {
-            var dataDirectoryProvider = new DataDirectoryInjection(command.CustomDataFolder);
+            var dataDirectoryProvider = new DataDirectoryInjection(command.DataFolder);
             builder.RegisterInstance(dataDirectoryProvider).As<IDataDirectoryProvider>();
         }
 
-        if (command.UseDataFolderForLoadOrder)
+        if (command.LoadOrder is not null)
         {
-            builder.RegisterType<DataDirectoryEnabledPluginListingsProvider>().As<IEnabledPluginListingsProvider>();
+            var loadOrder = command.LoadOrder.Split(',')
+                .Select(x => x.Trim())
+                .Select(x => ModKey.FromFileName(x));
+
+            builder.RegisterInstance(new InjectedEnabledPluginListingsProvider(loadOrder)).As<IEnabledPluginListingsProvider>();
             builder.RegisterType<NullPluginListingsPathProvider>().As<IPluginListingsPathProvider>();
             builder.RegisterType<NullCreationClubListingsPathProvider>().As<ICreationClubListingsPathProvider>();
         }

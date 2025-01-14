@@ -63,7 +63,10 @@ public class DuplicateReferencesAnalyzer : IContextualAnalyzer
                     removedDuplicates = dispensableDuplicates;
                 }
 
+                var context = param.LinkCache.ResolveSimpleContext(duplicateGroup.Key.Base);
                 param.AddTopic(
+                    context.ModKey,
+                    duplicateGroup.Key,
                     DuplicateReferences.Format(cell, duplicateGroup.Key.Base),
                     ("Keep", keptDuplicates),
                     ("Remove", removedDuplicates));

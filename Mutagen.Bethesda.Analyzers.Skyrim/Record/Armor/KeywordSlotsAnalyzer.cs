@@ -14,7 +14,7 @@ public class KeywordSlotsAnalyzer : IIsolatedRecordAnalyzer<IArmorGetter>
 
     public IEnumerable<TopicDefinition> Topics => [ArmorMatchingKeywordSlots];
 
-    public static readonly List<(BipedObjectFlag Slots, FormLink<IKeywordGetter> Keyword)> ClothingKeywords =
+    public static readonly IReadOnlyList<(BipedObjectFlag Slots, FormLink<IKeywordGetter> Keyword)> ClothingKeywords =
     [
         (BipedObjectFlag.Body, FormKeys.SkyrimSE.Skyrim.Keyword.ClothingBody),
         (BipedObjectFlag.Feet, FormKeys.SkyrimSE.Skyrim.Keyword.ClothingFeet),
@@ -22,7 +22,7 @@ public class KeywordSlotsAnalyzer : IIsolatedRecordAnalyzer<IArmorGetter>
         (BipedObjectFlag.Head | BipedObjectFlag.Hair, FormKeys.SkyrimSE.Skyrim.Keyword.ClothingHead),
     ];
 
-    public static readonly List<(BipedObjectFlag Slots, FormLink<IKeywordGetter> Keyword)> ArmorKeywords =
+    public static readonly IReadOnlyList<(BipedObjectFlag Slots, FormLink<IKeywordGetter> Keyword)> ArmorKeywords =
     [
         (BipedObjectFlag.Body, FormKeys.SkyrimSE.Skyrim.Keyword.ArmorCuirass),
         (BipedObjectFlag.Feet, FormKeys.SkyrimSE.Skyrim.Keyword.ArmorBoots),
@@ -30,7 +30,7 @@ public class KeywordSlotsAnalyzer : IIsolatedRecordAnalyzer<IArmorGetter>
         (BipedObjectFlag.Head | BipedObjectFlag.Hair, FormKeys.SkyrimSE.Skyrim.Keyword.ArmorHelmet),
     ];
 
-    public static readonly List<(BipedObjectFlag Slots, FormLink<IKeywordGetter> Keyword)> MiscKeywords =
+    public static readonly IReadOnlyList<(BipedObjectFlag Slots, FormLink<IKeywordGetter> Keyword)> MiscKeywords =
     [
         (BipedObjectFlag.Shield, FormKeys.SkyrimSE.Skyrim.Keyword.ArmorShield),
         (BipedObjectFlag.Circlet, FormKeys.SkyrimSE.Skyrim.Keyword.ClothingCirclet),
@@ -55,8 +55,8 @@ public class KeywordSlotsAnalyzer : IIsolatedRecordAnalyzer<IArmorGetter>
 
         var conditions = armor.BodyTemplate.ArmorType switch
         {
-            ArmorType.Clothing => ClothingKeywords,
-            _ => ArmorKeywords
+            ArmorType.Clothing => ClothingKeywords.ToList(),
+            _ => ArmorKeywords.ToList()
         };
 
         // Armor type independent conditions

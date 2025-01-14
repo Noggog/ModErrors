@@ -1,5 +1,7 @@
 using Mutagen.Bethesda.Analyzers.SDK.Analyzers;
 using Mutagen.Bethesda.Analyzers.SDK.Topics;
+using Mutagen.Bethesda.Plugins;
+using Mutagen.Bethesda.Plugins.Records;
 
 namespace Mutagen.Bethesda.Analyzers.Testing;
 
@@ -16,7 +18,10 @@ public class TestAnalyzer : IContextualAnalyzer
     {
         foreach (var topic in Topics)
         {
-            param.AddTopic(topic.Format());
+            param.AddTopic(
+                ModKey.Null,
+                new MajorRecordIdentifier { FormKey = FormKey.Null },
+                topic.Format());
         }
     }
 }

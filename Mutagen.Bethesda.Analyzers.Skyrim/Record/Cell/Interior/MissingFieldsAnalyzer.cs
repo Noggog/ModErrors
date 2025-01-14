@@ -48,13 +48,13 @@ public class MissingFieldsAnalyzer : IIsolatedRecordAnalyzer<ICellGetter>
         if (cell.AcousticSpace.IsNull)
         {
             param.AddTopic(
-                NoLightingTemplate.Format());
+                NoAcousticSpace.Format());
         }
 
         if (cell.Location.IsNull)
         {
             param.AddTopic(
-                NoLightingTemplate.Format());
+                NoLocation.Format());
         }
     }
 

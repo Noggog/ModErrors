@@ -1,5 +1,6 @@
 ﻿using Mutagen.Bethesda.Analyzers.SDK.Drops;
 using Mutagen.Bethesda.Analyzers.SDK.Topics;
+using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Cache;
 using Mutagen.Bethesda.Plugins.Order;
 using Mutagen.Bethesda.Plugins.Records;
@@ -41,11 +42,15 @@ public readonly struct ContextualAnalyzerParams
     /// Reports a topic to the engine
     /// </summary>
     public void AddTopic(
+        ModKey mod,
+        IMajorRecordIdentifierGetter record,
         IFormattedTopicDefinition formattedTopicDefinition,
         params (string Name, object Value)[] metaData)
     {
         _reportDropbox.Dropoff(
             _parameters,
+            mod,
+            record,
             Topic.Create(formattedTopicDefinition, AnalyzerType, metaData));
     }
 }

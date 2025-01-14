@@ -1,18 +1,18 @@
 ﻿using System.IO.Abstractions;
 using Noggog;
 
-namespace Mutagen.Bethesda.Analyzers.Config.Analyzer;
+namespace Mutagen.Bethesda.Analyzers.Config.Run;
 
-public class AnalyzerConfigBuilder(
+public class RunConfigBuilder(
     IFileSystem fileSystem,
     ConfigDirectoryProvider configDirectoryProvider,
-    ConfigReader<IAnalyzerConfig> reader)
+    ConfigReader<IRunConfig> reader)
 {
-    public const string AnalyzerFileName = ".analyzerconfig";
+    public const string AnalyzerFileName = ".runconfig";
 
-    public IAnalyzerConfigLookup Build()
+    public IRunConfigLookup Build()
     {
-        var config = new AnalyzerConfig();
+        var config = new RunConfig();
 
         foreach (var configDirectory in configDirectoryProvider.ConfigDirectories)
         {
@@ -22,7 +22,7 @@ public class AnalyzerConfigBuilder(
         return config;
     }
 
-    private void LoadIn(FilePath path, AnalyzerConfig config)
+    private void LoadIn(FilePath path, RunConfig config)
     {
         if (!path.CheckExists(fileSystem)) return;
 

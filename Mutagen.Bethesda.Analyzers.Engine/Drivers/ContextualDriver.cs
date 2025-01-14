@@ -12,10 +12,10 @@ public class ContextualDriver : IContextualDriver
     public IEnumerable<IAnalyzer> Analyzers => _contextualAnalyzers;
 
     public ContextualDriver(
-        IContextualAnalyzer[] contextualAnalyzers,
+        IAnalyzerProvider<IContextualAnalyzer> contextualAnalyzerProvider,
         IWorkDropoff dropoff)
     {
-        _contextualAnalyzers = contextualAnalyzers;
+        _contextualAnalyzers = contextualAnalyzerProvider.GetAnalyzers().ToArray();
         _dropoff = dropoff;
     }
 

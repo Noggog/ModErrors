@@ -1,8 +1,8 @@
-﻿namespace Mutagen.Bethesda.Analyzers.Config.Analyzer;
+﻿namespace Mutagen.Bethesda.Analyzers.Config.Run;
 
-public class ProcessDataDirectoryPath : IConfigReaderProcessor<IAnalyzerConfig>
+public class ProcessDataDirectoryPath : IConfigReaderProcessor<IRunConfig>
 {
-    public bool Process(IAnalyzerConfig config, IReadOnlyList<string> instructionParts, string value)
+    public bool Process(IRunConfig config, IReadOnlyList<string> instructionParts, string value)
     {
         // environment.data_directory = <path>
         if (instructionParts.Count != 2) return false;

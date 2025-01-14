@@ -86,9 +86,8 @@ public class CarryPackageAnalyzer : IContextualRecordAnalyzer<INpcGetter>
         foreach (var packageLink in param.Record.Packages)
         {
             if (!param.LinkCache.TryResolve<IPackageGetter>(packageLink.FormKey, out var package)) continue;
-            if (CarryPackageTemplates.Contains(package.PackageTemplate)) continue;
 
-            return true;
+            if (CarryPackageTemplates.Contains(package.PackageTemplate)) return true;
         }
 
         return false;

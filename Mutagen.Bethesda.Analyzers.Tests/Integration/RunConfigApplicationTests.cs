@@ -1,6 +1,6 @@
 using Autofac;
 using FluentAssertions;
-using Mutagen.Bethesda.Analyzers.Config.Analyzer;
+using Mutagen.Bethesda.Analyzers.Config.Run;
 using Mutagen.Bethesda.Analyzers.Config.Topic;
 using Mutagen.Bethesda.Analyzers.Engines;
 using Mutagen.Bethesda.Analyzers.SDK.Analyzers;
@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Mutagen.Bethesda.Analyzers.Tests.Integration;
 
-public class AnalyzerConfigApplicationTests
+public class RunConfigApplicationTests
 {
     public static readonly TopicDefinition Suggestion = new(
         "A123",
@@ -25,7 +25,7 @@ public class AnalyzerConfigApplicationTests
         Severity.Warning);
     public static readonly IContextualAnalyzer WarningAnalyzer;
 
-    static AnalyzerConfigApplicationTests()
+    static RunConfigApplicationTests()
     {
         SuggestionAnalyzer = new TestAnalyzer(Suggestion);
         WarningAnalyzer = new TestAnalyzer(Warning);

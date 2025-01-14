@@ -15,10 +15,10 @@ public class ByGenericTypeRecordContextualDriver<TMajor> : IContextualDriver
     public IEnumerable<IAnalyzer> Analyzers => _contextualRecordAnalyzers;
 
     public ByGenericTypeRecordContextualDriver(
-        IContextualRecordAnalyzer<TMajor>[] contextualRecordAnalyzers,
+        IAnalyzerProvider<IContextualRecordAnalyzer<TMajor>> contextualRecordAnalyzerProvider,
         IWorkDropoff dropoff)
     {
-        _contextualRecordAnalyzers = contextualRecordAnalyzers;
+        _contextualRecordAnalyzers = contextualRecordAnalyzerProvider.GetAnalyzers().ToArray();
         _dropoff = dropoff;
     }
 
@@ -36,6 +36,7 @@ public class ByGenericTypeRecordContextualDriver<TMajor> : IContextualDriver
                 var param = new ContextualRecordAnalyzerParams<TMajor>(
                     driverParams.LinkCache,
                     driverParams.LoadOrder,
+                    listing.Mod,
                     rec,
                     driverParams.ReportDropbox);
                 return _contextualRecordAnalyzers.Select(analyzer =>

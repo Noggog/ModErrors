@@ -1,4 +1,5 @@
-﻿using Mutagen.Bethesda.Analyzers.SDK.Drops;
+﻿using Mutagen.Bethesda.Analyzers.Config.Run;
+using Mutagen.Bethesda.Analyzers.SDK.Drops;
 using Mutagen.Bethesda.Analyzers.SDK.Topics;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Records;
@@ -9,10 +10,12 @@ namespace Mutagen.Bethesda.Analyzers.Reporting.Handlers;
 public class ConsoleReportHandler : IReportHandler
 {
     private readonly IWorkDropoff _workDropoff;
+    private readonly IRunConfigLookup _runConfig;
 
-    public ConsoleReportHandler(IWorkDropoff workDropoff)
+    public ConsoleReportHandler(IWorkDropoff workDropoff, IRunConfigLookup runConfig)
     {
         _workDropoff = workDropoff;
+        _runConfig = runConfig;
     }
 
     public void Dropoff(
@@ -23,9 +26,11 @@ public class ConsoleReportHandler : IReportHandler
     {
         _workDropoff.Enqueue(() =>
         {
-            Console.WriteLine($"{topic.TopicDefinition}");
-            Console.WriteLine($"   {sourceMod.ToString()} -> {majorRecord.FormKey.ToString()} {majorRecord.EditorID}");
-            Console.WriteLine($"   {topic.FormattedTopic.FormattedMessage}");
+            Console.WriteLine($"""
+                {topic.TopicDefinition}
+                   {sourceMod.ToString()} -> {majorRecord.FormKey.ToString()} {majorRecord.EditorID}
+                   {topic.FormattedTopic.FormattedMessage}
+                """);
 
             PrintMetadata(topic);
         });
@@ -37,15 +42,16 @@ public class ConsoleReportHandler : IReportHandler
     {
         _workDropoff.Enqueue(() =>
         {
-            Console.WriteLine($"{topic.TopicDefinition}");
-            Console.WriteLine($"   {topic.FormattedTopic.FormattedMessage}");
+            Console.WriteLine($"""
+                {topic.TopicDefinition}
+                   {topic.FormattedTopic.FormattedMessage}
+                """);
         });
     }
 
-    private static void PrintMetadata(Topic topic)
+    private void PrintMetadata(Topic topic)
     {
-        // ToDo
-        // Also have a parameter to omit these, optionally
+        if (!_runConfig.PrintMetadata) return;
 
         foreach (var meta in topic.MetaData)
         {

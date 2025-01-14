@@ -20,6 +20,9 @@ public class NoLockListAnalyzer : IContextualRecordAnalyzer<ICellGetter>
         // Public cells should not have a lock list
         if (cell.IsPublic()) return;
 
+        // Skip non-settlement cells
+        if (!cell.IsSettlementCell(param.LinkCache)) return;
+
         if (cell.LockList.IsNull)
         {
             param.AddTopic(

@@ -22,10 +22,10 @@ public class ByGenericTypeRecordFrameContextualDriver<TMajor> : IContextualRecor
 
     public ByGenericTypeRecordFrameContextualDriver(
         IWorkDropoff dropoff,
-        IContextualRecordFrameAnalyzer<TMajor>[] contextualRecordFrameAnalyzers)
+        IAnalyzerProvider<IContextualRecordFrameAnalyzer<TMajor>> contextualRecordFrameAnalyzerProvider)
     {
         _dropoff = dropoff;
-        _contextualRecordFrameAnalyzers = contextualRecordFrameAnalyzers;
+        _contextualRecordFrameAnalyzers = contextualRecordFrameAnalyzerProvider.GetAnalyzers().ToArray();
     }
 
     public async Task Drive(ContextualDriverParams driverParams, MajorRecordFrame frame)

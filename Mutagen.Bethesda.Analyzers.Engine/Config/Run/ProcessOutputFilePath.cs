@@ -1,8 +1,8 @@
-﻿namespace Mutagen.Bethesda.Analyzers.Config.Analyzer;
+﻿namespace Mutagen.Bethesda.Analyzers.Config.Run;
 
-public class ProcessOutputFilePath : IConfigReaderProcessor<IAnalyzerConfig>
+public class ProcessOutputFilePath : IConfigReaderProcessor<IRunConfig>
 {
-    public bool Process(IAnalyzerConfig config, IReadOnlyList<string> instructionParts, string value)
+    public bool Process(IRunConfig config, IReadOnlyList<string> instructionParts, string value)
     {
         // output_file = <path>
         if (instructionParts.Count != 1) return false;

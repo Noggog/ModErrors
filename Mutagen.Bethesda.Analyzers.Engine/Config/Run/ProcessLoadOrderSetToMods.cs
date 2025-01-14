@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using Mutagen.Bethesda.Plugins;
 
-namespace Mutagen.Bethesda.Analyzers.Config.Analyzer;
+namespace Mutagen.Bethesda.Analyzers.Config.Run;
 
-public class ProcessLoadOrderSetToMods(ILogger<ProcessLoadOrderSetToMods> logger) : IConfigReaderProcessor<IAnalyzerConfig>
+public class ProcessLoadOrderSetToMods(ILogger<ProcessLoadOrderSetToMods> logger) : IConfigReaderProcessor<IRunConfig>
 {
-    public bool Process(IAnalyzerConfig config, IReadOnlyList<string> instructionParts, string value)
+    public bool Process(IRunConfig config, IReadOnlyList<string> instructionParts, string value)
     {
         // environment.load_order.set_to_mods = <mod1>,<mod2>,...
         if (instructionParts.Count != 3) return false;

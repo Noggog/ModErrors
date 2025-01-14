@@ -32,7 +32,10 @@ public class DuplicateConstructibleAnalyzer : IContextualAnalyzer
         {
             if (duplicateGroup.Count() == 1) continue;
 
+            var context = param.LinkCache.ResolveSimpleContext(duplicateGroup.Key);
             param.AddTopic(
+                context.ModKey,
+                duplicateGroup.Key,
                 DuplicateConstructibleReference.Format(duplicateGroup.Count(), duplicateGroup.Key.CreatedObject),
                 ("Constructibles", duplicateGroup.ToArray())
             );

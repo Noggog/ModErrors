@@ -16,15 +16,21 @@ public class RunAnalyzersCommand : IMinimumSeverityConfiguration
     [Option('s', "Severity", HelpText = "Minimum severity required in order to report")]
     public Severity MinimumSeverity { get; set; } = Severity.Suggestion;
 
+    [Option("RunConfigPath", HelpText = "Optional path to a run config file")]
+    public string? RunConfigPath { get; set; } = null;
+
     [Option('o', "OutputFilePath", HelpText = "Optional output file path to save the report")]
     public string? OutputFilePath { get; set; } = null;
 
-    [Option("CustomDataFolder", HelpText = "Optional custom data folder to use for the analysis")]
-    public string? CustomDataFolder { get; set; } = null;
+    [Option("DataFolder", HelpText = "Optional directory path to use a custom data folder for the analysis")]
+    public string? DataFolder { get; set; } = null;
 
-    [Option("UseDataFolderForLoadOrder", HelpText = "Whether to use all plugins in the data folder for load order resolution instead of plugins.txt")]
-    public bool UseDataFolderForLoadOrder { get; set; } = false;
+    [Option("LoadOrder", HelpText = "Optional list of mod file names to set a custom load order, separated by commas")]
+    public string? LoadOrder { get; set; } = null;
 
     [Option('t', "NumThreads", HelpText = "Number of threads to use")]
     public int? NumThreads { get; set; }
+
+    [Option("PrintMetadata", HelpText = "Disable printing metadata")]
+    public bool? PrintMetadata { get; set; }
 }

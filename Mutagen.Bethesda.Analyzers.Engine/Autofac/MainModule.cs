@@ -30,5 +30,7 @@ public class MainModule : Module
             .SingleInstance();
         builder.RegisterGeneric(typeof(ConfigReader<>))
             .As(typeof(ConfigReader<>));
+        builder.RegisterGeneric(typeof(FilteredAnalyzerProvider<>))
+            .As(typeof(IAnalyzerProvider<>));
     }
 }

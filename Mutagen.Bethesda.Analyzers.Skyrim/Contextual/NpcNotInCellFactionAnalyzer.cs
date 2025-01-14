@@ -42,7 +42,11 @@ public class NpcNotInCellFactionAnalyzer : IContextualAnalyzer
                 // Skip prisoners
                 if (npc.HasFaction(param.LinkCache, editorId => editorId is not null && editorId.Contains("Prisoner"))) continue;
 
-                param.AddTopic(NpcNotInCellFaction.Format(npc, cellOwnerFaction));
+                var context = param.LinkCache.ResolveSimpleContext(npc);
+                param.AddTopic(
+                    context.ModKey,
+                    npc,
+                    NpcNotInCellFaction.Format(npc, cellOwnerFaction));
             }
         }
     }

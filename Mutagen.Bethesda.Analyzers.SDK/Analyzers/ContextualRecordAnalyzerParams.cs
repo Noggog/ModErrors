@@ -13,18 +13,20 @@ public readonly struct ContextualRecordAnalyzerParams<TMajor>
     public Type? AnalyzerType { get; init; }
     public readonly ILinkCache LinkCache;
     public readonly ILoadOrderGetter<IModListingGetter<IModGetter>> LoadOrder;
+    private readonly IModGetter _mod;
     public readonly TMajor Record;
     private readonly IReportDropbox _reportDropbox;
     private readonly ReportContextParameters _parameters;
 
-    internal ContextualRecordAnalyzerParams(
-        ILinkCache linkCache,
+    internal ContextualRecordAnalyzerParams(ILinkCache linkCache,
         ILoadOrderGetter<IModListingGetter<IModGetter>> loadOrder,
+        IModGetter mod,
         TMajor record,
         IReportDropbox reportDropbox)
     {
         LinkCache = linkCache;
         LoadOrder = loadOrder;
+        _mod = mod;
         Record = record;
         _reportDropbox = reportDropbox;
         _parameters = new ReportContextParameters(linkCache);
@@ -36,6 +38,8 @@ public readonly struct ContextualRecordAnalyzerParams<TMajor>
     {
         _reportDropbox.Dropoff(
             _parameters,
+            _mod.ModKey,
+            Record,
             Topic.Create(formattedTopicDefinition, AnalyzerType, metaData));
     }
 

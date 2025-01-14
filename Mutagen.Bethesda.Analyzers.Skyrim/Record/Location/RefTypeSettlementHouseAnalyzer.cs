@@ -14,7 +14,7 @@ public class RefTypeSettlementHouseAnalyzer : IContextualRecordAnalyzer<ILocatio
 
     public IEnumerable<TopicDefinition> Topics { get; } = [NoHouseContainerRefType];
 
-    private static readonly List<IFormLinkGetter<ILocationReferenceTypeGetter>> HouseContainerRefTypes =
+    private static readonly IReadOnlyList<IFormLinkGetter<ILocationReferenceTypeGetter>> HouseContainerRefTypes =
     [
         FormKeys.SkyrimSE.Skyrim.LocationReferenceType.HouseContainerRefType,
         FormKeys.SkyrimSE.Skyrim.LocationReferenceType.TGRWealthMarker01,

@@ -12,7 +12,7 @@ public class CsvReportHandler : IReportHandler
 {
     private readonly IWorkDropoff _workDropoff;
     private readonly CsvInputs _inputs;
-    private readonly object _lock = new();
+    private readonly Lock _lock = new();
 
     public CsvReportHandler(
         CsvInputs inputs,
